@@ -3,7 +3,7 @@ package com.glofox.backend;
 import com.glofox.backend.models.Owner;
 import com.glofox.backend.models.Studio;
 import com.glofox.backend.models.StudioClass;
-import com.glofox.backend.repositories.OwnerRepository;
+import com.glofox.backend.repositories.StudioRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -13,10 +13,10 @@ import java.util.ArrayList;
 @Component
 public class BootstrapApplicationRunner implements CommandLineRunner {
 
-    OwnerRepository repository;
+    StudioRepository repository;
 
-    public BootstrapApplicationRunner(OwnerRepository ownerRepository) {
-        this.repository = ownerRepository;
+    public BootstrapApplicationRunner(StudioRepository studioRepository) {
+        this.repository = studioRepository;
     }
 
     //Runs on application start to populate the persistence with some initial data
@@ -26,7 +26,8 @@ public class BootstrapApplicationRunner implements CommandLineRunner {
         Studio studio54 = new Studio("Studio 54", new ArrayList<>(), new ArrayList<>());
 
         //Owner
-        Owner andy = new Owner("andy", studio54);
+        Owner andy = new Owner("andy");
+        studio54.setOwner(andy);
 
         //Class
         StudioClass spinningClass = new StudioClass(
@@ -38,7 +39,7 @@ public class BootstrapApplicationRunner implements CommandLineRunner {
 
         studio54.getClasses().add(spinningClass);
 
-        this.repository.createOwner(andy);
+        this.repository.createStudio(studio54);
 
     }
 }

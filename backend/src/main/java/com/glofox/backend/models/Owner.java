@@ -8,11 +8,9 @@ import lombok.NoArgsConstructor;
 public class Owner {
 
   private String name;
-  private Studio studio;
 
   //Used only for bootstrapping
-  public Owner(String name, Studio studio) {
+  public Owner(String name) {
     this.name = name;
-    this.studio = studio;
   }
 }

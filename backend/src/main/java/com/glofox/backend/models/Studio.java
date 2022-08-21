@@ -7,6 +7,7 @@ import java.util.List;
 @Data
 public class Studio {
 
+  private Owner owner;
   private String name;
   private List<Member> members;
   private List<StudioClass> classes;

@@ -16,7 +16,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class ClassControllerTest {
+public class StudioControllerTest {
 
   @LocalServerPort
   private int port;
@@ -32,7 +32,7 @@ public class ClassControllerTest {
   public void setUp(){
     headers = new LinkedMultiValueMap<>();
     headers.add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
-    baseUrl = "http://localhost:" + port + "/andy/create";
+    baseUrl = "http://localhost:" + port + "/andy/classes";
   }
 
   @AfterEach
@@ -66,7 +66,7 @@ public class ClassControllerTest {
 
   @Test
   public void nonExistentOwnerReturnsBadRequest() {
-    String wrongUrl = "http://localhost:" + port + "/steve/create";
+    String wrongUrl = "http://localhost:" + port + "/steve/classes";
     String body = "{\"name\":\"class 1\",\"start\":\"22-09-2022\",\"end\":\"23-09-2022\",\"capacity\":\"200\"}";
     HttpEntity<String> httpEntity = new HttpEntity<>(body, headers);
     ResponseEntity<String> response = restTemplate.postForEntity(wrongUrl, httpEntity, String.class);
