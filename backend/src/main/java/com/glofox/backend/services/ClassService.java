@@ -1,31 +1,31 @@
 package com.glofox.backend.services;
 
 import com.glofox.backend.exceptions.ClassCreationException;
+import com.glofox.backend.models.Entity;
+import com.glofox.backend.models.Studio;
 import com.glofox.backend.models.StudioClass;
 import com.glofox.backend.repositories.OwnerRepository;
-import org.springframework.stereotype.Service;
+import com.glofox.backend.repositories.Repository;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-@Service
+@Component
 public class ClassService {
 
-  OwnerRepository ownerRepository;
+  Repository ownerRepository;
 
   public ClassService(OwnerRepository repository) {
     this.ownerRepository = repository;
   }
 
-  public void createClass(StudioClass studioClass, String ownerId) {
-    //Check if owner exists
+  public void create(StudioClass studioClass, String ownerId) {
     if(this.ownerRepository.getOwnerByName(ownerId) == null){
       throw new ClassCreationException("The owner does not exist");
     }
-    //Check if class exists
     if(exists(studioClass, ownerId)){
       throw new ClassCreationException("The class already exists");
     }
-    //Create class in studio
     this.ownerRepository.createClass(studioClass, ownerId);
 
   }
@@ -42,5 +42,4 @@ public class ClassService {
   private boolean areTheSameDate(Date date1, Date date2) {
     return date1.compareTo(date2) == 0;
   }
-
 }

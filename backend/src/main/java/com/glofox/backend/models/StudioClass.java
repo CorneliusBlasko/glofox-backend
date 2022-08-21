@@ -3,11 +3,13 @@ package com.glofox.backend.models;
 import com.glofox.backend.controllers.dtos.StudioClassDto;
 import com.glofox.backend.exceptions.ClassCreationException;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
 @Data
-public class StudioClass {
+@EqualsAndHashCode(callSuper=false)
+public class StudioClass extends Entity{
 
   private String name;
   private Date start;
@@ -19,9 +21,9 @@ public class StudioClass {
       if(!datesAreValid(dto)) {
         throw new ClassCreationException("The start date must be before the end date");
       } else {
-        this.name = dto.getName();
         this.start = dto.getStart();
         this.end = dto.getEnd();
+        this.name = dto.getName();
         this.capacity = dto.getCapacity();
       }
     } else {

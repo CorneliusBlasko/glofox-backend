@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class OwnerRepository {
+public class OwnerRepository implements Repository{
 
   List<Owner> owners;
 

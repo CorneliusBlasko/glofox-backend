@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class ClassController {
@@ -25,7 +24,7 @@ public class ClassController {
                                             @PathVariable String id) {
     try {
       StudioClass studioClass = new StudioClass(classDto);
-      this.classService.createClass(studioClass, id);
+      this.classService.create(studioClass, id);
       return new ResponseEntity<>(HttpStatus.CREATED);
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

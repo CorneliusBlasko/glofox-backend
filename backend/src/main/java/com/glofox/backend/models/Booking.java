@@ -7,8 +7,7 @@ import java.util.Date;
 @Data
 public class Booking {
 
-  private final String id;
+  private final String memberName;
   private Date date;
-  private String className;
 
 }
