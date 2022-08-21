@@ -11,7 +11,6 @@ public class Studio {
   private List<Member> members;
   private List<StudioClass> classes;
 
-  //Used only for bootstrapping
   public Studio(String name, List<Member> members, List<StudioClass> classes) {
     this.name = name;
     this.members = members;

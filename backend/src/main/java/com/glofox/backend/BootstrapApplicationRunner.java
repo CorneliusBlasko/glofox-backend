@@ -19,6 +19,7 @@ public class BootstrapApplicationRunner implements CommandLineRunner {
         this.repository = ownerRepository;
     }
 
+    //Runs on application start to populate the persistence with some initial data
     @Override
     public void run(String...args) throws Exception {
         //Studio

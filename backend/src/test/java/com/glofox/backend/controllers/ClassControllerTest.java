@@ -63,4 +63,14 @@ public class ClassControllerTest {
     ResponseEntity<String> response = restTemplate.postForEntity(baseUrl, httpEntity, String.class);
     Assertions.assertEquals(response.getStatusCode(), HttpStatus.BAD_REQUEST);
   }
+
+  @Test
+  public void nonExistentOwnerReturnsBadRequest() {
+    String wrongUrl = "http://localhost:" + port + "/steve/create";
+    String body = "{\"name\":\"class 1\",\"start\":\"22-09-2022\",\"end\":\"23-09-2022\",\"capacity\":\"200\"}";
+    HttpEntity<String> httpEntity = new HttpEntity<>(body, headers);
+    ResponseEntity<String> response = restTemplate.postForEntity(wrongUrl, httpEntity, String.class);
+    Assertions.assertEquals(response.getStatusCode(), HttpStatus.BAD_REQUEST);
+    Assertions.assertEquals(response.getBody(), "The owner does not exist");
+  }
 }

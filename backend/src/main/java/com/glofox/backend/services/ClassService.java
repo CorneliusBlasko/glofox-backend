@@ -1,11 +1,7 @@
 package com.glofox.backend.services;
 
-import com.glofox.backend.exceptions.ClassCreationException;
-import com.glofox.backend.models.Entity;
-import com.glofox.backend.models.Studio;
 import com.glofox.backend.models.StudioClass;
-import com.glofox.backend.repositories.OwnerRepository;
-import com.glofox.backend.repositories.Repository;
+import com.glofox.backend.repositories.IOwnerRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -13,18 +9,18 @@ import java.util.Date;
 @Component
 public class ClassService {
 
-  Repository ownerRepository;
+  IOwnerRepository ownerRepository;
 
-  public ClassService(OwnerRepository repository) {
+  public ClassService(IOwnerRepository repository) {
     this.ownerRepository = repository;
   }
 
   public void create(StudioClass studioClass, String ownerId) {
     if(this.ownerRepository.getOwnerByName(ownerId) == null){
-      throw new ClassCreationException("The owner does not exist");
+      throw new RuntimeException("The owner does not exist");
     }
     if(exists(studioClass, ownerId)){
-      throw new ClassCreationException("The class already exists");
+      throw new RuntimeException("The class already exists");
     }
     this.ownerRepository.createClass(studioClass, ownerId);
 

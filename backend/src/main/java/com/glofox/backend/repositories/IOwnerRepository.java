@@ -3,7 +3,7 @@ package com.glofox.backend.repositories;
 import com.glofox.backend.models.Owner;
 import com.glofox.backend.models.StudioClass;
 
-public interface Repository {
+public interface IOwnerRepository {
 
   void createOwner(Owner owner);
 
