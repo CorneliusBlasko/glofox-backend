@@ -1,7 +1,8 @@
 package com.glofox.backend.services;
 
-import com.glofox.backend.exceptions.ClassNonExistent;
+import com.glofox.backend.exceptions.ClassNonExistentException;
 import com.glofox.backend.exceptions.DuplicatedException;
+import com.glofox.backend.exceptions.InvalidDateException;
 import com.glofox.backend.exceptions.RoleException;
 import com.glofox.backend.models.Booking;
 import com.glofox.backend.models.Member;
@@ -45,20 +46,30 @@ public class StudioService implements Service{
     Studio studio = this.repository.getStudioByMember(member);
     if (studio != null) {
       //check if class exists in studio
-      if (studio.getClasses().stream().anyMatch(c -> c.getName().equals(booking.getClassName()))) {
+      StudioClass studioClass = studio.getClasses().stream()
+          .filter(c -> c.getName().equals(booking.getClassName()))
+          .findFirst()
+          .orElse(null);
+      if (studioClass != null) {
         //Check if booking already exists
         if(this.repository.getStudioMember(member, studio).getBookings().contains(booking)){
           throw new DuplicatedException();
         } else {
-          member.getBookings().add(booking);
-          for(Member m : studio.getMembers()){
-            if (m.getName().equals(member.getName())){
-              m.getBookings().add(booking);
+          //Check if booking date is inside the class date range
+          if(booking.getDate().after(studioClass.getStart())
+              && booking.getDate().before(studioClass.getEnd())){
+            member.getBookings().add(booking);
+            for(Member m : studio.getMembers()){
+              if (m.getName().equals(member.getName())){
+                m.getBookings().add(booking);
+              }
             }
+          } else {
+            throw new InvalidDateException();
           }
         }
       } else {
-        throw new ClassNonExistent();
+        throw new ClassNonExistentException();
       }
     } else {
       throw new RoleException();

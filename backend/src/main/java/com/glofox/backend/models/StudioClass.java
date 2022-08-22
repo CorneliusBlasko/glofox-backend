@@ -2,7 +2,6 @@ package com.glofox.backend.models;
 
 import com.glofox.backend.dtos.StudioClassDto;
 import com.glofox.backend.exceptions.InvalidDateFormatException;
-import com.glofox.backend.utilities.ValidationUtils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -18,8 +17,8 @@ public class StudioClass {
   private Integer capacity;
 
   public StudioClass(StudioClassDto dto) {
-    if(ValidationUtils.noNullFields(dto)) {
-      if(ValidationUtils.classDatesAreValid(dto)) {
+    if(fieldsAreNotNull(dto)) {
+      if(classDatesAreValid(dto)) {
         throw new RuntimeException("The start date must be before the end date");
       } else {
         try{
@@ -42,6 +41,18 @@ public class StudioClass {
     this.start = start;
     this.end = end;
     this.capacity = capacity;
+  }
+
+  private boolean fieldsAreNotNull(StudioClassDto dto) {
+    return dto.getName() != null
+        && !dto.getName().isBlank()
+        && dto.getStart() != null
+        && dto.getEnd() != null
+        && dto.getCapacity() != null;
+  }
+
+  public boolean classDatesAreValid(StudioClassDto dto) {
+    return !dto.getStart().before(dto.getEnd());
   }
 
 }

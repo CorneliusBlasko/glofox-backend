@@ -2,7 +2,6 @@ package com.glofox.backend.models;
 
 import com.glofox.backend.dtos.BookingDto;
 import com.glofox.backend.exceptions.InvalidDateFormatException;
-import com.glofox.backend.utilities.ValidationUtils;
 import lombok.Data;
 
 import java.util.Date;
@@ -15,7 +14,7 @@ public class Booking {
   private Date date;
 
   public Booking(BookingDto dto, String student){
-    if(ValidationUtils.noNullFields(dto)) {
+    if(fieldsAreNotNull(dto, student)) {
         this.className = dto.getClassName();
         this.student = student;
         try{
@@ -26,6 +25,14 @@ public class Booking {
     } else {
       throw new RuntimeException("All fields must be filled");
     }
+  }
+
+  private boolean fieldsAreNotNull(BookingDto dto, String student) {
+    return dto.getClassName() != null
+        && !dto.getClassName().isBlank()
+        && student != null
+        && !student.isBlank()
+        && dto.getDate() != null;
   }
 
 }

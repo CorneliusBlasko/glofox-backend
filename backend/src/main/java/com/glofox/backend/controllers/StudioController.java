@@ -2,8 +2,9 @@ package com.glofox.backend.controllers;
 
 import com.glofox.backend.dtos.BookingDto;
 import com.glofox.backend.dtos.StudioClassDto;
-import com.glofox.backend.exceptions.ClassNonExistent;
+import com.glofox.backend.exceptions.ClassNonExistentException;
 import com.glofox.backend.exceptions.DuplicatedException;
+import com.glofox.backend.exceptions.InvalidDateException;
 import com.glofox.backend.exceptions.RoleException;
 import com.glofox.backend.models.Booking;
 import com.glofox.backend.models.Member;
@@ -57,7 +58,7 @@ public class StudioController {
       return new ResponseEntity<>(HttpStatus.CREATED);
     } catch (RoleException e) {
       return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-    } catch (DuplicatedException | ClassNonExistent e) {
+    } catch (DuplicatedException | ClassNonExistentException | InvalidDateException e) {
       return new ResponseEntity<>(HttpStatus.CONFLICT);
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
