@@ -1,5 +1,6 @@
 package com.glofox.backend.repositories;
 
+import com.glofox.backend.models.Member;
 import com.glofox.backend.models.Owner;
 import com.glofox.backend.models.Studio;
 import com.glofox.backend.models.StudioClass;
@@ -54,5 +55,10 @@ public class StudioRepository implements Repository{
   @Override
   public List<Studio> getAllStudios() {
     return this.studios;
+  }
+
+  @Override
+  public Studio getStudioByMember(Member member) {
+    return this.studios.stream().filter(s -> s.getMembers().contains(member)).findFirst().orElse(null);
   }
 }

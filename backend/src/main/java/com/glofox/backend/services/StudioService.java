@@ -2,6 +2,8 @@ package com.glofox.backend.services;
 
 import com.glofox.backend.exceptions.DuplicatedException;
 import com.glofox.backend.exceptions.RoleException;
+import com.glofox.backend.models.Booking;
+import com.glofox.backend.models.Member;
 import com.glofox.backend.models.Studio;
 import com.glofox.backend.models.StudioClass;
 import com.glofox.backend.repositories.Repository;
@@ -20,7 +22,8 @@ public class StudioService implements Service{
     this.repository = repository;
   }
 
-  public void create(StudioClass studioClass, String name) {
+  @Override
+  public void createClass(StudioClass studioClass, String name) {
     if(this.repository.getOwnerByName(name) == null){
       throw new RoleException();
     }
@@ -28,11 +31,24 @@ public class StudioService implements Service{
       throw new DuplicatedException();
     }
     this.repository.createClass(studioClass, name);
-
   }
 
+  @Override
   public List<Studio> getAllStudios(){
     return this.repository.getAllStudios();
+  }
+
+  @Override
+  public void bookClass(Booking booking, Member member) {
+    Studio studio = this.repository.getStudioByMember(member);
+    if (studio != null) {
+      if(studio.getBookings().contains(booking)){
+        throw new DuplicatedException();
+      }
+      studio.getBookings().add(booking);
+    } else {
+      throw new RoleException();
+    }
   }
 
   public boolean classExists(StudioClass studioClass, String name) {

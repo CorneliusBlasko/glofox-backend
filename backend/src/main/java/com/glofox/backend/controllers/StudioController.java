@@ -1,8 +1,11 @@
 package com.glofox.backend.controllers;
 
-import com.glofox.backend.controllers.dtos.StudioClassDto;
+import com.glofox.backend.dtos.BookingDto;
+import com.glofox.backend.dtos.StudioClassDto;
 import com.glofox.backend.exceptions.DuplicatedException;
 import com.glofox.backend.exceptions.RoleException;
+import com.glofox.backend.models.Booking;
+import com.glofox.backend.models.Member;
 import com.glofox.backend.models.Studio;
 import com.glofox.backend.models.StudioClass;
 import com.glofox.backend.services.Service;
@@ -27,7 +30,7 @@ public class StudioController {
                                             @PathVariable String name) {
     try {
       StudioClass studioClass = new StudioClass(classDto);
-      this.studioService.create(studioClass, name);
+      this.studioService.createClass(studioClass, name);
       return new ResponseEntity<>(HttpStatus.CREATED);
     } catch (DuplicatedException e) {
       return new ResponseEntity<>(HttpStatus.CONFLICT);
@@ -41,6 +44,24 @@ public class StudioController {
   @GetMapping("/studios")
   public List<Studio> getAllStudios() {
     return this.studioService.getAllStudios();
+  }
+
+  @PostMapping("/{name}/bookings")
+  public ResponseEntity<String> bookClass(@RequestBody BookingDto bookingDto,
+                                            @PathVariable String name) {
+    try {
+      Booking booking = new Booking(bookingDto);
+      Member member = new Member(name);
+      this.studioService.bookClass(booking, member);
+      return new ResponseEntity<>(HttpStatus.CREATED);
+    } catch (RoleException e) {
+      return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    } catch (DuplicatedException e) {
+      return new ResponseEntity<>(HttpStatus.CONFLICT);
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+
   }
 
 }

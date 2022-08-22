@@ -1,12 +1,14 @@
-package com.glofox.backend.controllers.dtos;
+package com.glofox.backend.dtos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
 @Data
-public class StudioClassDto {
+@EqualsAndHashCode(callSuper=false)
+public class StudioClassDto extends Dto{
 
   private String name;
 

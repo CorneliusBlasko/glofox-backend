@@ -1,5 +1,6 @@
 package com.glofox.backend.repositories;
 
+import com.glofox.backend.models.Member;
 import com.glofox.backend.models.Owner;
 import com.glofox.backend.models.Studio;
 import com.glofox.backend.models.StudioClass;
@@ -17,6 +18,8 @@ public interface Repository {
   void createClass(StudioClass studioClass, String name);
 
   List<Studio> getAllStudios();
+
+  Studio getStudioByMember(Member member);
 
 
 }
