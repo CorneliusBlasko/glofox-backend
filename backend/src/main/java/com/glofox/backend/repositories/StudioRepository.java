@@ -59,6 +59,22 @@ public class StudioRepository implements Repository{
 
   @Override
   public Studio getStudioByMember(Member member) {
-    return this.studios.stream().filter(s -> s.getMembers().contains(member)).findFirst().orElse(null);
+    for(Studio studio : this.studios){
+      for(Member mem : studio.getMembers()){
+        if(member.getName().equals(mem.getName())){
+          return studio;
+        }
+      }
+    }
+    return null;
   }
+
+  @Override
+  public Member getStudioMember(Member member, Studio studio){
+    return studio.getMembers().stream()
+        .filter(m -> m.getName().equals(member.getName()))
+        .findFirst()
+        .orElse(null);
+  }
+
 }

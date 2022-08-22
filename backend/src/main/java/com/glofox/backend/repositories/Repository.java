@@ -21,5 +21,7 @@ public interface Repository {
 
   Studio getStudioByMember(Member member);
 
+  Member getStudioMember(Member member, Studio studio);
+
 
 }

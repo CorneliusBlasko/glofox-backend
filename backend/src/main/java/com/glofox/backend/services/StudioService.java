@@ -1,5 +1,6 @@
 package com.glofox.backend.services;
 
+import com.glofox.backend.exceptions.ClassNonExistent;
 import com.glofox.backend.exceptions.DuplicatedException;
 import com.glofox.backend.exceptions.RoleException;
 import com.glofox.backend.models.Booking;
@@ -40,12 +41,25 @@ public class StudioService implements Service{
 
   @Override
   public void bookClass(Booking booking, Member member) {
+    //Check if is member of studio
     Studio studio = this.repository.getStudioByMember(member);
     if (studio != null) {
-      if(studio.getBookings().contains(booking)){
-        throw new DuplicatedException();
+      //check if class exists in studio
+      if (studio.getClasses().stream().anyMatch(c -> c.getName().equals(booking.getClassName()))) {
+        //Check if booking already exists
+        if(this.repository.getStudioMember(member, studio).getBookings().contains(booking)){
+          throw new DuplicatedException();
+        } else {
+          member.getBookings().add(booking);
+          for(Member m : studio.getMembers()){
+            if (m.getName().equals(member.getName())){
+              m.getBookings().add(booking);
+            }
+          }
+        }
+      } else {
+        throw new ClassNonExistent();
       }
-      studio.getBookings().add(booking);
     } else {
       throw new RoleException();
     }

@@ -11,7 +11,7 @@ import java.util.Objects;
 
 public class ValidationUtils {
 
-  public static boolean fieldsAreNotNull(Dto dto) {
+  public static boolean noNullFields(Dto dto) {
     Field[] fields = Dto.class.getDeclaredFields();
 
     if(dto instanceof StudioClassDto){
@@ -22,16 +22,12 @@ public class ValidationUtils {
 
     List<Field> fieldList = Arrays.asList(fields);
 
-    return fieldList.stream().anyMatch(Objects::nonNull);
+    return fieldList.stream().noneMatch(Objects::isNull);
 
   }
 
-  public static boolean datesAreValid(Dto dto) {
-    if (dto instanceof StudioClassDto) {
-      StudioClassDto scdto = (StudioClassDto) dto;
-      return !scdto.getStart().before(scdto.getEnd());
-    }
-    return true;
+  public static boolean classDatesAreValid(StudioClassDto dto) {
+      return !dto.getStart().before(dto.getEnd());
   }
 
 }

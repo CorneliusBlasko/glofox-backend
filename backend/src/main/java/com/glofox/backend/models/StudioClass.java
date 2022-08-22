@@ -6,9 +6,7 @@ import com.glofox.backend.utilities.ValidationUtils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
@@ -20,8 +18,8 @@ public class StudioClass {
   private Integer capacity;
 
   public StudioClass(StudioClassDto dto) {
-    if(!ValidationUtils.fieldsAreNotNull(dto)) {
-      if(ValidationUtils.datesAreValid(dto)) {
+    if(ValidationUtils.noNullFields(dto)) {
+      if(ValidationUtils.classDatesAreValid(dto)) {
         throw new RuntimeException("The start date must be before the end date");
       } else {
         try{

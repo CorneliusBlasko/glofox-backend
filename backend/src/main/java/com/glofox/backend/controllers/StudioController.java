@@ -2,6 +2,7 @@ package com.glofox.backend.controllers;
 
 import com.glofox.backend.dtos.BookingDto;
 import com.glofox.backend.dtos.StudioClassDto;
+import com.glofox.backend.exceptions.ClassNonExistent;
 import com.glofox.backend.exceptions.DuplicatedException;
 import com.glofox.backend.exceptions.RoleException;
 import com.glofox.backend.models.Booking;
@@ -50,13 +51,13 @@ public class StudioController {
   public ResponseEntity<String> bookClass(@RequestBody BookingDto bookingDto,
                                             @PathVariable String name) {
     try {
-      Booking booking = new Booking(bookingDto);
+      Booking booking = new Booking(bookingDto, name);
       Member member = new Member(name);
       this.studioService.bookClass(booking, member);
       return new ResponseEntity<>(HttpStatus.CREATED);
     } catch (RoleException e) {
       return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-    } catch (DuplicatedException e) {
+    } catch (DuplicatedException | ClassNonExistent e) {
       return new ResponseEntity<>(HttpStatus.CONFLICT);
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

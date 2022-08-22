@@ -10,12 +10,14 @@ import java.util.Date;
 @Data
 public class Booking {
 
+  private String className;
   private String student;
   private Date date;
 
-  public Booking(BookingDto dto){
-    if(!ValidationUtils.fieldsAreNotNull(dto)) {
-        this.student = dto.getStudent();
+  public Booking(BookingDto dto, String student){
+    if(ValidationUtils.noNullFields(dto)) {
+        this.className = dto.getClassName();
+        this.student = student;
         try{
         this.date = dto.getDate();
         } catch (Exception e) {
