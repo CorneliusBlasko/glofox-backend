@@ -18,7 +18,7 @@ public class StudioClass {
 
   public StudioClass(StudioClassDto dto) {
     if(fieldsAreNotNull(dto)) {
-      if(classDatesAreValid(dto)) {
+      if(classDatesAreInvalid(dto)) {
         throw new RuntimeException("The start date must be before the end date");
       } else {
         try{
@@ -51,7 +51,7 @@ public class StudioClass {
         && dto.getCapacity() != null;
   }
 
-  public boolean classDatesAreValid(StudioClassDto dto) {
+  public boolean classDatesAreInvalid(StudioClassDto dto) {
     return !dto.getStart().before(dto.getEnd());
   }
 

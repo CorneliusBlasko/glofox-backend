@@ -24,7 +24,8 @@ public class StudioControllerTest {
   @Autowired
   private TestRestTemplate restTemplate;
 
-  private String baseUrl;
+  private String classesUrl;
+  private String bookingsUrl;
 
   private MultiValueMap<String, String> headers;
 
@@ -32,45 +33,96 @@ public class StudioControllerTest {
   public void setUp(){
     headers = new LinkedMultiValueMap<>();
     headers.add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
-    baseUrl = "http://localhost:" + port + "/andy/classes";
+    classesUrl = "http://localhost:" + port + "/andy/classes";
+    bookingsUrl = "http://localhost:" + port + "/Jane/bookings";
   }
 
   @AfterEach
   public void clean(){
     this.headers = null;
-    this.baseUrl = null;
+    this.classesUrl = null;
+    this.bookingsUrl = null;
   }
 
   @Test
-  public void emptyBodyShouldReturnBadRequest() {
+  public void emptyBodyShouldReturnBadRequestClasses() {
     HttpEntity<String> httpEntity = new HttpEntity<>(headers);
-    ResponseEntity<String> response = restTemplate.postForEntity(baseUrl, httpEntity, String.class);
+    ResponseEntity<String> response = restTemplate.postForEntity(classesUrl, httpEntity, String.class);
     Assertions.assertEquals(response.getStatusCode(), HttpStatus.BAD_REQUEST);
   }
 
   @Test
-  public void properBodyShouldReturnCreated() {
+  public void properBodyShouldReturnCreatedClasses() {
     String body = "{\"name\":\"class 1\",\"start\":\"22-09-2022\",\"end\":\"23-09-2022\",\"capacity\":\"200\"}";
     HttpEntity<String> httpEntity = new HttpEntity<>(body, headers);
-    ResponseEntity<String> response = restTemplate.postForEntity(baseUrl, httpEntity, String.class);
+    ResponseEntity<String> response = restTemplate.postForEntity(classesUrl, httpEntity, String.class);
     Assertions.assertEquals(response.getStatusCode(), HttpStatus.CREATED);
   }
 
   @Test
-  public void wrongBodyShouldReturnBadRequest() {
+  public void wrongBodyShouldReturnBadRequestClasses() {
     String body = "{\"name\":\"class 1\",\"start\":\"22-09-2022\",\"end\":\"23-09-2022\"}";
     HttpEntity<String> httpEntity = new HttpEntity<>(body, headers);
-    ResponseEntity<String> response = restTemplate.postForEntity(baseUrl, httpEntity, String.class);
+    ResponseEntity<String> response = restTemplate.postForEntity(classesUrl, httpEntity, String.class);
     Assertions.assertEquals(response.getStatusCode(), HttpStatus.BAD_REQUEST);
   }
 
   @Test
-  public void nonExistentOwnerReturnsBadRequest() {
+  public void nonExistentOwnerReturnsForbiddenClasses() {
     String wrongUrl = "http://localhost:" + port + "/steve/classes";
     String body = "{\"name\":\"class 1\",\"start\":\"22-09-2022\",\"end\":\"23-09-2022\",\"capacity\":\"200\"}";
     HttpEntity<String> httpEntity = new HttpEntity<>(body, headers);
     ResponseEntity<String> response = restTemplate.postForEntity(wrongUrl, httpEntity, String.class);
-    Assertions.assertEquals(response.getStatusCode(), HttpStatus.BAD_REQUEST);
-    Assertions.assertEquals(response.getBody(), "The owner does not exist");
+    Assertions.assertEquals(response.getStatusCode(), HttpStatus.FORBIDDEN);
   }
+
+  @Test
+  public void wrongDateReturnsConflictClasses() {
+    String body = "{\"name\":\"class 1\",\"start\":\"24-09-2022\",\"end\":\"23-09-2022\",\"capacity\":\"200\"}";
+    HttpEntity<String> httpEntity = new HttpEntity<>(body, headers);
+    ResponseEntity<String> response = restTemplate.postForEntity(classesUrl, httpEntity, String.class);
+    Assertions.assertEquals(response.getStatusCode(), HttpStatus.BAD_REQUEST);
+    Assertions.assertEquals(response.getBody(), "The start date must be before the end date");
+  }
+
+  @Test
+  public void emptyBodyShouldReturnBadRequestBookings(){
+    HttpEntity<String> httpEntity = new HttpEntity<>(headers);
+    ResponseEntity<String> response = restTemplate.postForEntity(bookingsUrl, httpEntity, String.class);
+    Assertions.assertEquals(response.getStatusCode(), HttpStatus.BAD_REQUEST);
+  }
+
+  @Test
+  public void properBodyShouldReturnCreatedBookings() {
+    String body = "{\"className\":\"spinning\",\"date\":\"26-09-2022\"}";
+    HttpEntity<String> httpEntity = new HttpEntity<>(body, headers);
+    ResponseEntity<String> response = restTemplate.postForEntity(bookingsUrl, httpEntity, String.class);
+    Assertions.assertEquals(response.getStatusCode(), HttpStatus.CREATED);
+  }
+
+  @Test
+  public void wrongBodyShouldReturnBadRequestBookings() {
+    String body = "{\"className\":\"spinning\"}";
+    HttpEntity<String> httpEntity = new HttpEntity<>(body, headers);
+    ResponseEntity<String> response = restTemplate.postForEntity(bookingsUrl, httpEntity, String.class);
+    Assertions.assertEquals(response.getStatusCode(), HttpStatus.BAD_REQUEST);
+  }
+
+  @Test
+  public void nonExistentMemberReturnsForbiddenBookings() {
+    String wrongUrl = "http://localhost:" + port + "/andy/bookings";
+    String body = "{\"className\":\"spinning\",\"date\":\"26-09-2022\"}";
+    HttpEntity<String> httpEntity = new HttpEntity<>(body, headers);
+    ResponseEntity<String> response = restTemplate.postForEntity(wrongUrl, httpEntity, String.class);
+    Assertions.assertEquals(response.getStatusCode(), HttpStatus.FORBIDDEN);
+  }
+
+  @Test
+  public void wrongDateReturnsConflictBookings() {
+    String body = "{\"className\":\"spinning\",\"date\":\"14-09-2022\"}";
+    HttpEntity<String> httpEntity = new HttpEntity<>(body, headers);
+    ResponseEntity<String> response = restTemplate.postForEntity(bookingsUrl, httpEntity, String.class);
+    Assertions.assertEquals(response.getStatusCode(), HttpStatus.CONFLICT);
+  }
+
 }
