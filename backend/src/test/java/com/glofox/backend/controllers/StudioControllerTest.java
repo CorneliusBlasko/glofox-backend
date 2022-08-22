@@ -34,7 +34,7 @@ public class StudioControllerTest {
     headers = new LinkedMultiValueMap<>();
     headers.add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
     classesUrl = "http://localhost:" + port + "/andy/classes";
-    bookingsUrl = "http://localhost:" + port + "/Jane/bookings";
+    bookingsUrl = "http://localhost:" + port + "/jane/bookings";
   }
 
   @AfterEach

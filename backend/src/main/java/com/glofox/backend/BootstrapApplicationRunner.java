@@ -48,8 +48,8 @@ public class BootstrapApplicationRunner implements CommandLineRunner {
         studio54.getClasses().add(pilates);
 
         //Members
-        Member steve = new Member("Steve");
-        Member jane = new Member("Jane");
+        Member steve = new Member("steve");
+        Member jane = new Member("jane");
 
         studio54.getMembers().add(steve);
         studio54.getMembers().add(jane);
