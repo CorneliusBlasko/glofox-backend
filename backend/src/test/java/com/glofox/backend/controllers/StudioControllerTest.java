@@ -30,7 +30,7 @@ public class StudioControllerTest {
   private MultiValueMap<String, String> headers;
 
   @BeforeEach
-  public void setUp(){
+  public void setUp() {
     headers = new LinkedMultiValueMap<>();
     headers.add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
     classesUrl = "http://localhost:" + port + "/andy/classes";
@@ -38,7 +38,7 @@ public class StudioControllerTest {
   }
 
   @AfterEach
-  public void clean(){
+  public void clean() {
     this.headers = null;
     this.classesUrl = null;
     this.bookingsUrl = null;
@@ -86,7 +86,7 @@ public class StudioControllerTest {
   }
 
   @Test
-  public void emptyBodyShouldReturnBadRequestBookings(){
+  public void emptyBodyShouldReturnBadRequestBookings() {
     HttpEntity<String> httpEntity = new HttpEntity<>(headers);
     ResponseEntity<String> response = restTemplate.postForEntity(bookingsUrl, httpEntity, String.class);
     Assertions.assertEquals(response.getStatusCode(), HttpStatus.BAD_REQUEST);

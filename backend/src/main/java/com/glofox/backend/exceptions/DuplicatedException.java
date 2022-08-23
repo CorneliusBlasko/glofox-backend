@@ -1,4 +1,4 @@
 package com.glofox.backend.exceptions;
 
-public class DuplicatedException extends RuntimeException{
+public class DuplicatedException extends RuntimeException {
 }

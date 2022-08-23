@@ -13,15 +13,15 @@ public class Booking {
   private String student;
   private Date date;
 
-  public Booking(BookingDto dto, String student){
-    if(fieldsAreNotNull(dto, student)) {
-        this.className = dto.getClassName();
-        this.student = student;
-        try{
+  public Booking(BookingDto dto, String student) {
+    if (fieldsAreNotNull(dto, student)) {
+      this.className = dto.getClassName();
+      this.student = student;
+      try {
         this.date = dto.getDate();
-        } catch (Exception e) {
-          throw new InvalidDateFormatException("The date format must be dd-MM-yyyy");
-        }
+      } catch (Exception e) {
+        throw new InvalidDateFormatException("The date format must be dd-MM-yyyy");
+      }
     } else {
       throw new RuntimeException("All fields must be filled");
     }

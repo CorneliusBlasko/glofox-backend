@@ -50,7 +50,7 @@ public class StudioController {
 
   @PostMapping("/{name}/bookings")
   public ResponseEntity<String> bookClass(@RequestBody BookingDto bookingDto,
-                                            @PathVariable String name) {
+                                          @PathVariable String name) {
     try {
       Booking booking = new Booking(bookingDto, name);
       Member member = new Member(name);

@@ -1,7 +1,6 @@
 package com.glofox.backend.models;
 
 import lombok.Data;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,7 @@ public class Member {
 
   public Member(String name) {
     this.bookings = new ArrayList<>();
-    if(name != null && !name.isBlank()) {
+    if (name != null && !name.isBlank()) {
       this.name = name;
     } else {
       throw new RuntimeException("All fields must be filled");

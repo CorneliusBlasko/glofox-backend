@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 @Component
-public class StudioService implements Service{
+public class StudioService implements Service {
 
   Repository repository;
 
@@ -26,17 +26,17 @@ public class StudioService implements Service{
 
   @Override
   public void createClass(StudioClass studioClass, String name) {
-    if(this.repository.getOwnerByName(name) == null){
+    if (this.repository.getOwnerByName(name) == null) {
       throw new RoleException();
     }
-    if(classExists(studioClass, name)){
+    if (classExists(studioClass, name)) {
       throw new DuplicatedException();
     }
     this.repository.createClass(studioClass, name);
   }
 
   @Override
-  public List<Studio> getAllStudios(){
+  public List<Studio> getAllStudios() {
     return this.repository.getAllStudios();
   }
 
@@ -52,15 +52,15 @@ public class StudioService implements Service{
           .orElse(null);
       if (studioClass != null) {
         //Check if booking already exists
-        if(this.repository.getStudioMember(member, studio).getBookings().contains(booking)){
+        if (this.repository.getStudioMember(member, studio).getBookings().contains(booking)) {
           throw new DuplicatedException();
         } else {
           //Check if booking date is inside the class date range
-          if(booking.getDate().after(studioClass.getStart())
-              && booking.getDate().before(studioClass.getEnd())){
+          if (booking.getDate().after(studioClass.getStart())
+              && booking.getDate().before(studioClass.getEnd())) {
             member.getBookings().add(booking);
-            for(Member m : studio.getMembers()){
-              if (m.getName().equals(member.getName())){
+            for (Member m : studio.getMembers()) {
+              if (m.getName().equals(member.getName())) {
                 m.getBookings().add(booking);
               }
             }

@@ -7,8 +7,8 @@ import lombok.EqualsAndHashCode;
 import java.util.Date;
 
 @Data
-@EqualsAndHashCode(callSuper=false)
-public class StudioClassDto extends Dto{
+@EqualsAndHashCode(callSuper = false)
+public class StudioClassDto extends Dto {
 
   private String name;
 

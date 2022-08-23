@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 import java.util.Date;
 
 @Data
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 public class StudioClass {
 
   private String name;
@@ -17,11 +17,11 @@ public class StudioClass {
   private Integer capacity;
 
   public StudioClass(StudioClassDto dto) {
-    if(fieldsAreNotNull(dto)) {
-      if(classDatesAreInvalid(dto)) {
+    if (fieldsAreNotNull(dto)) {
+      if (classDatesAreInvalid(dto)) {
         throw new RuntimeException("The start date must be before the end date");
       } else {
-        try{
+        try {
           this.start = dto.getStart();
           this.end = dto.getEnd();
         } catch (Exception e) {

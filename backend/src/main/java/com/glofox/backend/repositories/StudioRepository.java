@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class StudioRepository implements Repository{
+public class StudioRepository implements Repository {
 
   List<Studio> studios;
 
@@ -24,9 +24,9 @@ public class StudioRepository implements Repository{
   }
 
   @Override
-  public Owner getOwnerByName(String name){
-    for(Studio studio : this.studios){
-      if(name.equals(studio.getOwner().getName())){
+  public Owner getOwnerByName(String name) {
+    for (Studio studio : this.studios) {
+      if (name.equals(studio.getOwner().getName())) {
         return studio.getOwner();
       }
     }
@@ -35,8 +35,8 @@ public class StudioRepository implements Repository{
 
   @Override
   public Studio getStudioByOwnerName(String name) {
-    for(Studio studio : this.studios){
-      if(name.equals(studio.getOwner().getName())){
+    for (Studio studio : this.studios) {
+      if (name.equals(studio.getOwner().getName())) {
         return studio;
       }
     }
@@ -45,8 +45,8 @@ public class StudioRepository implements Repository{
 
   @Override
   public void createClass(StudioClass studioClass, String name) {
-    for(Studio studio : this.studios){
-      if(name.equals(studio.getOwner().getName())){
+    for (Studio studio : this.studios) {
+      if (name.equals(studio.getOwner().getName())) {
         studio.getClasses().add(studioClass);
       }
     }
@@ -59,9 +59,9 @@ public class StudioRepository implements Repository{
 
   @Override
   public Studio getStudioByMember(Member member) {
-    for(Studio studio : this.studios){
-      for(Member mem : studio.getMembers()){
-        if(member.getName().equals(mem.getName())){
+    for (Studio studio : this.studios) {
+      for (Member mem : studio.getMembers()) {
+        if (member.getName().equals(mem.getName())) {
           return studio;
         }
       }
@@ -70,7 +70,7 @@ public class StudioRepository implements Repository{
   }
 
   @Override
-  public Member getStudioMember(Member member, Studio studio){
+  public Member getStudioMember(Member member, Studio studio) {
     return studio.getMembers().stream()
         .filter(m -> m.getName().equals(member.getName()))
         .findFirst()
